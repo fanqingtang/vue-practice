@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');    // 引入 html文�
 const VueLoaderPlugin = require('vue-loader/lib/plugin');    // 引入vue-loader解析
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');  // 显示加载进度
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');  // 拆分css
-
+const Webpack = require('webpack');
 module.exports = {
   entry: './src/index.js',        // 入口文件
   output: {                       // 出口文件  
@@ -27,6 +27,12 @@ module.exports = {
             loader: 'css-loader'
           }
         ]
+      },
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        include: /src/,           // 只转化 src 目录下的js
+        exclude: /node_modules/   // 排除掉 node_modules, 优化打包速度
       },
       {
         test: /\.(jpg|png|gif|svg)$/,
@@ -57,7 +63,13 @@ module.exports = {
     new HtmlWebpackPlugin({          // new HtmlWebpackPlugin 类
       template: './src/index.html'
     }),
-    new ProgressBarWebpackPlugin()   // 显示加载 进度
+    new ProgressBarWebpackPlugin(),   // 显示加载 进度
+    new Webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery:'jquery',
+      "window.jQuery": 'jquery',
+      Popper: ['popper.js', 'default']
+    })
   ],
   devServer:{
     // contentBase: './dist',
@@ -66,5 +78,9 @@ module.exports = {
     open: false,
     hot: true
   },
-  mode: 'development'          // 模式配置     
+  mode: 'development',          // 模式配置
+  resolve: {
+    alias: {},
+    extensions: ['.js', '.vue', '.json']
+  }     
 }
