@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <p>我是vue 能解析吗</p>
+  <div id="app">
+    <router-link to="/">首页</router-link>
+    <router-link to="/cart">购物车</router-link>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
-</template
+</template>
 
 <script>
-
+  export default {
+    name: "App"
+  }
 </script>
 
 
-<style>
-  p {
-    color: red;
-  }
+<style scoped>
+
 </style>

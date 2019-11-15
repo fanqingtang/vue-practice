@@ -2,11 +2,14 @@ const path = require('path');   // 引入路径模块
 const HtmlWebpackPlugin = require('html-webpack-plugin');    // 引入 html文件
 const VueLoaderPlugin = require('vue-loader/lib/plugin');    // 引入vue-loader解析
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');  // 显示加载进度
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');  // 拆分css
+
 module.exports = {
   entry: './src/index.js',        // 入口文件
   output: {                       // 出口文件  
     filename: 'bundle.[hash:4].js',
     path: path.resolve('dist')
+    // publicPath: '/demo'
   },
   module: {
     rules: [
@@ -16,7 +19,36 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          }
+        ]
+      },
+      {
+        test: /\.(jpg|png|gif|svg)$/,
+        use: [
+          {
+            loader:'url-loader',
+            options: {
+              limit: 8192,           // 小于 8k 的图片自动转成base64格式，并且不会存在实体图片 
+              outputPath: 'images/'  //图片打包之后存放的目录
+            }
+          }
+        ]
+        // test: /.(jpg|png|gif|svg)$/,
+        // loader: 'url-loader?limit=8192&name=[name].[ext]?[hash]'  
+      },
+      {
+        test: /\.(htm | html)$/,
+        use: 'html-withimg-loader'
+      },
+      {
+        test: /\.(eot|ttf|woff|svg)$/,
+        use: 'file-loader'
       }
     ]
   },
@@ -28,7 +60,7 @@ module.exports = {
     new ProgressBarWebpackPlugin()   // 显示加载 进度
   ],
   devServer:{
-    contentBase: './dist',
+    // contentBase: './dist',
     host: 'localhost',
     port: 3001,
     open: false,
