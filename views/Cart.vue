@@ -37,7 +37,7 @@ export default {
   created() {  // 在数据被初始化后会被调用，this指向指的是vm实例，钩子函数
     axios.get('../assets/json/carts.json').then(res => {
       this.products = res.data;
-      this.checkOne();
+      // this.checkOne();
     })
   },
   data() {
