@@ -16,6 +16,11 @@ const router = new Router(
         path: '/todo',
         name:'Todo',
         component: () => import("../views/Todo.vue")
+      },
+      {
+        path: '/com',
+        name: 'Com',
+        component: () => import("../views/component.vue")
       }
     ]
   }
